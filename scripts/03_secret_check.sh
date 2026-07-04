@@ -10,7 +10,7 @@ if [ -z "${DEMO_API_TOKEN:-}" ]; then
   exit 1
 fi
 
-token_length=${#DEMO_API_TOKEN}
+token_length=${DEMO_API_TOKEN}
 
 echo "Secret Demo"
 echo "Das Secret DEMO_API_TOKEN ist gesetzt."

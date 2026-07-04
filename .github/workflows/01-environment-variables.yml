@@ -1,0 +1,41 @@
+name: 01-environment-variables
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  env-demo:
+    name: Environment Variable
+    runs-on: ubuntu-latest
+
+    env:
+          COURSE_NAME: "GitHub Actions Bash Projekt"
+          ENVIRONMENT_NAME: "CI-Umgebung"
+
+    steps:
+      - name: Repository herunterladen
+        uses: actions/checkout@v4
+
+      - name: Skript ausführbar machen
+        run: chmod +x scripts/*.sh
+
+      - name: Skript starten
+        run: bash scripts/01_env_report.sh
+        env:
+          STEP_MESSAGE: "Hallo aus dem Step"
+        
+      
+      - name: env-report als Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: env-report
+          path: output/env-report.txt
+

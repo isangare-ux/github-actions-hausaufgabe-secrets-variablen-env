@@ -1,0 +1,43 @@
+run-name: "02-repository-variables - ${{ github.actor }}"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/02-repository-variables.yml"
+      - "scripts/02_variables_report.sh"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/02-repository-variables.yml"
+      - "scripts/02_variables_report.sh"
+
+  workflow_dispatch:
+
+jobs:
+  repo-var:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository-Variables
+        uses: actions/checkout@v4
+
+
+      - name: Skripte ausführbar machen
+        run: chmod +x scripts/*.sh
+
+      - name: Skript starten
+        run: bash scripts/02_variables_report.sh
+        env:
+          APP_NAME: ${{vars.APP_NAME}}
+          TARGET_ENV: ${{vars.TARGET_ENV}}
+          APP_VERSION: ${{vars.APP_VERSION}}
+
+      - name: repo-variables als Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Repository-Variables
+          path: output/env-report.txt
+
